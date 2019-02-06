@@ -3,7 +3,30 @@ import { connect } from "react-redux";
 
 import { addNewTodo, toggleCompleted } from "../actions/actions";
 
+import "../index.css";
+
 class TodoList extends React.Component {
+  state = {
+    newTodo: ""
+  };
+
+  handleChanges = e => {
+    this.setState({
+      newTodo: e.target.value
+    });
+  };
+
+  addNewTodo = e => {
+    e.preventDefault();
+    this.props.addNewTodo(this.state.newTodo);
+    this.setState({ newTodo: "" });
+  };
+
+  toggleCompleted = (e, index) => {
+    e.preventDefault();
+    this.props.toggleCompleted(index);
+  };
+
   render() {
     return (
       <Fragment>
@@ -12,7 +35,7 @@ class TodoList extends React.Component {
           {this.props.todos.map((todo, index) => (
             <h4
               className={todo.completed ? "completed" : ""}
-              onClick={e => this.toggleCompleted(e, index)}
+              onClick={e => this.props.toggleCompleted(e, index)}
               key={index}
             >
               {todo.value}
@@ -24,7 +47,7 @@ class TodoList extends React.Component {
           value={this.state.newTodo}
           onChange={this.handleChanges}
         />
-        <button onClick={this.addTodo}>Add To-Do</button>
+        <button onClick={this.addNewTodo}>Add To-Do</button>
       </Fragment>
     );
   }

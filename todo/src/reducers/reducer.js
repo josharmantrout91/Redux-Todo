@@ -18,7 +18,7 @@ function reducer(state = initialState, action) {
     case TOGGLE_COMPLETED:
       return {
         ...state,
-        todos: todos.map((todo, index) =>
+        todos: state.todos.map((todo, index) =>
           action.payload === index
             ? { ...todo, completed: !todo.completed }
             : todo

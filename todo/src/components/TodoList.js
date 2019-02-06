@@ -1,9 +1,40 @@
-import React from "react";
+import React, { Fragment } from "react";
+import { connect } from "react-redux";
+
+import { addNewTodo, toggleCompleted } from "../actions/actions";
 
 class TodoList extends React.Component {
-  handleChanges = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
+  render() {
+    return (
+      <Fragment>
+        <h2>To-Do List</h2>
+        <div>
+          {this.props.todos.map((todo, index) => (
+            <h4
+              className={todo.completed ? "completed" : ""}
+              onClick={e => this.toggleCompleted(e, index)}
+              key={index}
+            >
+              {todo.value}
+            </h4>
+          ))}
+        </div>
+        <input
+          type="text"
+          value={this.state.newTodo}
+          onChange={this.handleChanges}
+        />
+        <button onClick={this.addTodo}>Add To-Do</button>
+      </Fragment>
+    );
+  }
 }
 
-export default TodoList;
+const mapStateToProps = state => ({
+  todos: state.todos
+});
+
+export default connect(
+  mapStateToProps,
+  { addNewTodo, toggleCompleted }
+)(TodoList);
